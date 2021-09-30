@@ -1,3 +1,39 @@
+/* ------------ STRUCTURING THE DATA WE ARE DEALING WITH
+
+ENTITIES WE ARE DEALING WITH:
+- DAYS (day number for now, maybe month + year later on)
+- MEETINGS (time, description)
+- CALENDAR (will contain all existing days)
+
+HOW ARE THEY CONNECTED TO EACH OTHER (what's the RELATIONSHIP between them)
+- We have 0 to many different MEETINGS for each DAY
+-> Every day will have a COLLECTION of several meetings
+
+HOW WE CAN MODEL THAT:
+- MEETING: we can use an object -> { time: "09:00", description: "Live lecture" }
+- DAY: we can use an array -> [ { time: "09:00", description: "Live lecture" }, { time: "15:00", description: "Recap session" }  ]
+- CALENDAR: we use an object as a Dictionary -> {
+    "2021-09-13" : [ { time: "09:00", description: "Live lecture" }, { time: "15:00", description: "Recap session" }  ],
+    "2021-09-15" : [ { time: "10:00", description: "Dentist" } ],
+    "2021-09-18" : [ ],
+    "2021-09-21" : [ { time: "17:00", description: "Debrief" } ],
+}
+
+
+*/
+
+// TODO: This acts as a TEMPLATE, as BLUEPRINTS for how we want to structure our data
+// we still need to properly organize user input this way (through functions)
+// So we need to:
+// 1. take user input and shape it as displayed below
+// 2. read calendarData to properly display meetings in the page (= create LI based on the content of these objects/arrays)
+let calendarData = {
+    "13" : [ { time: "09:00", description: "Live lecture" }, { time: "15:00", description: "Recap session" }  ],
+    "15" : [ { time: "10:00", description: "Dentist" } ],
+    "18" : [ ],
+    "21" : [ { time: "17:00", description: "Debrief" } ],
+}
+
 
 const displayMonth = function() {
 
@@ -58,6 +94,8 @@ const createNewMeeting = function() {
 
     let meetingsContainerNode = document.getElementById("meetings-for-the-day")
     meetingsContainerNode.appendChild(newMeetingListItemNode)
+
+    // TODO: we still need to somehow link those meetings to the currently selected day
 
 }
 
