@@ -72,11 +72,44 @@ const selectDay = function(eventData) {
 
     // Make it "selected" somehow
     clickedDayNode.classList.add("selected") // then we apply the 'selected' class to it
+    
+    // Show meetings for the newly selected day
+    displayMeetingsForTheSelectedDay()
 }
 
 const getSelectedDay = function() {
     // we find the first element in the page that has the "selected" class assigned
     return document.querySelector(".selected")
+}
+
+const displayMeetingsForTheSelectedDay = function() {
+
+    // We can look for the container just once (instead of putting this line INSIDE the loop and looking for THE SAME container several times)
+    let meetingsContainerNode = document.getElementById("meetings-for-the-day")
+    meetingsContainerNode.innerHTML = ""
+
+    // Identify currently selected day
+    const currentlySelectedDayNode = getSelectedDay()
+    if (currentlySelectedDayNode === null) {
+        return  // quit our function, because there's nothing to display
+    }
+
+    // Find the meetings for that day
+    const selectedDayNumber = currentlySelectedDayNode.innerText
+    const meetingsForSelectedDay = calendarData[selectedDayNumber]
+
+    if (meetingsForSelectedDay === undefined) {
+        return
+    }
+
+    // Display those meetings inside our list
+    for (let meeting of meetingsForSelectedDay) {
+
+        let newMeetingListItemNode = document.createElement("li") // <li></li>
+        newMeetingListItemNode.innerText = `${meeting.time} - ${meeting.description}` // <li>09:00 - Live lecture</li>
+
+        meetingsContainerNode.appendChild(newMeetingListItemNode)
+    }
 }
 
 const createNewMeeting = function() {
@@ -88,12 +121,8 @@ const createNewMeeting = function() {
     let meetingDescriptionNode = document.getElementById("meeting-description")
     let meetingDescription = meetingDescriptionNode.value
 
-    // Display new meeting to the user
-    let newMeetingListItemNode = document.createElement("li") // <li></li>
-    newMeetingListItemNode.innerText = `${meetingTime} - ${meetingDescription}` // <li>09:00 - Live lecture</li>
-
-    let meetingsContainerNode = document.getElementById("meetings-for-the-day")
-    meetingsContainerNode.appendChild(newMeetingListItemNode)
+    // Refresh meetings
+    displayMeetingsForTheSelectedDay()
 
     // TODO: we still need to somehow link those meetings to the currently selected day
 
