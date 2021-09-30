@@ -27,12 +27,7 @@ HOW WE CAN MODEL THAT:
 // So we need to:
 // 1. take user input and shape it as displayed below
 // 2. read calendarData to properly display meetings in the page (= create LI based on the content of these objects/arrays)
-let calendarData = {
-    "13" : [ { time: "09:00", description: "Live lecture" }, { time: "15:00", description: "Recap session" }  ],
-    "15" : [ { time: "10:00", description: "Dentist" } ],
-    "18" : [ ],
-    "21" : [ { time: "17:00", description: "Debrief" } ],
-}
+let calendarData = { }
 
 
 const displayMonth = function() {
@@ -82,25 +77,34 @@ const getSelectedDay = function() {
     return document.querySelector(".selected")
 }
 
+const getMeetingsForTheCurrentlySelectedDay = function() {
+
+    // Identify currently selected day
+    const currentlySelectedDayNode = getSelectedDay()
+    if (currentlySelectedDayNode === null) {
+        return null  // quit our function, because there's nothing to display
+    }
+
+    // Find the meetings for that day
+    const selectedDayNumber = currentlySelectedDayNode.innerText
+    let meetingsForSelectedDay = calendarData[selectedDayNumber]
+
+    if (meetingsForSelectedDay === undefined) {
+        meetingsForSelectedDay = []
+        calendarData[selectedDayNumber] = meetingsForSelectedDay
+    }
+
+    return meetingsForSelectedDay
+}
+
 const displayMeetingsForTheSelectedDay = function() {
 
     // We can look for the container just once (instead of putting this line INSIDE the loop and looking for THE SAME container several times)
     let meetingsContainerNode = document.getElementById("meetings-for-the-day")
     meetingsContainerNode.innerHTML = ""
 
-    // Identify currently selected day
-    const currentlySelectedDayNode = getSelectedDay()
-    if (currentlySelectedDayNode === null) {
-        return  // quit our function, because there's nothing to display
-    }
-
-    // Find the meetings for that day
-    const selectedDayNumber = currentlySelectedDayNode.innerText
-    const meetingsForSelectedDay = calendarData[selectedDayNumber]
-
-    if (meetingsForSelectedDay === undefined) {
-        return
-    }
+    // Get meetings for the currently selected day
+    const meetingsForSelectedDay = getMeetingsForTheCurrentlySelectedDay()
 
     // Display those meetings inside our list
     for (let meeting of meetingsForSelectedDay) {
@@ -121,10 +125,20 @@ const createNewMeeting = function() {
     let meetingDescriptionNode = document.getElementById("meeting-description")
     let meetingDescription = meetingDescriptionNode.value
 
+    // Create a new "meeting" object
+    const newMeeting = {
+        time: meetingTime,
+        description: meetingDescription
+    }
+
+    // Find the meetings array for the currently selected day
+    const meetingsForSelectedDay = getMeetingsForTheCurrentlySelectedDay()
+
+    // Push the new meeting into the array for the selected day
+    meetingsForSelectedDay.push(newMeeting)
+
     // Refresh meetings
     displayMeetingsForTheSelectedDay()
-
-    // TODO: we still need to somehow link those meetings to the currently selected day
 
 }
 
