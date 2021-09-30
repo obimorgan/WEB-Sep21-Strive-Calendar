@@ -89,15 +89,15 @@
     <div id="meetings-container">
 
         <h2>Meetings for the day</h2>
-        
+
         <div id="meeting-creation">
             <input type="time" id="meeting-time" value="09:00" />
             <input type="text" id="meeting-description" placeholder="insert description here" />
-            <input type="button" value="Create" onclick="alert('implement me!')" />
+            <input type="button" value="Create" onclick="createNewMeeting()" />
         </div>
 
         <ul id="meetings-for-the-day">
-            <li>09:00 - Live lecture</li>
+            <!-- Dynamically generating them -->
         </ul>
     </div>
 

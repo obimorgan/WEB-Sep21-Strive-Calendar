@@ -43,6 +43,24 @@ const getSelectedDay = function() {
     return document.querySelector(".selected")
 }
 
+const createNewMeeting = function() {
+
+    // Read the user input (time, description)
+    let meetingTimeNode = document.getElementById("meeting-time")
+    let meetingTime = meetingTimeNode.value
+
+    let meetingDescriptionNode = document.getElementById("meeting-description")
+    let meetingDescription = meetingDescriptionNode.value
+
+    // Display new meeting to the user
+    let newMeetingListItemNode = document.createElement("li") // <li></li>
+    newMeetingListItemNode.innerText = `${meetingTime} - ${meetingDescription}` // <li>09:00 - Live lecture</li>
+
+    let meetingsContainerNode = document.getElementById("meetings-for-the-day")
+    meetingsContainerNode.appendChild(newMeetingListItemNode)
+
+}
+
 window.onload = function() {
 
     // ALWAYS put all your instructions inside of FUNCTIONS!
