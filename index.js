@@ -27,7 +27,7 @@ HOW WE CAN MODEL THAT:
 // So we need to:
 // 1. take user input and shape it as displayed below
 // 2. read calendarData to properly display meetings in the page (= create LI based on the content of these objects/arrays)
-let calendarData = { }
+let calendarData
 
 
 const displayMonth = function() {
@@ -137,9 +137,34 @@ const createNewMeeting = function() {
     // Push the new meeting into the array for the selected day
     meetingsForSelectedDay.push(newMeeting)
 
+    // Save updated calendar data
+    saveToDisk()
+
     // Refresh meetings
     displayMeetingsForTheSelectedDay()
 
+}
+
+const saveToDisk = function() {
+
+    // Convert our "calendarData" object into a string
+    let json = JSON.stringify(calendarData)
+
+    // Save our serialized JSON string to the local storage
+    localStorage.setItem("strive-calendar-data", json)
+}
+
+const readFromDisk = function() {
+
+    // Read saved data from the local storage
+    let json = localStorage.getItem("strive-calendar-data")
+
+    if (json === null) {
+        calendarData = { }
+    }
+    else {
+        calendarData = JSON.parse(json)
+    }
 }
 
 window.onload = function() {
@@ -147,5 +172,8 @@ window.onload = function() {
     // ALWAYS put all your instructions inside of FUNCTIONS!
     // ...and if you need to run them as soon as the page loads,
     // use window.onload
+
+    readFromDisk()
+
     displayMonth()
 }
